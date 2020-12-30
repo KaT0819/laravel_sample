@@ -5,8 +5,10 @@ services:
     container_name: tech-boost-php
     build: ./docker/php
     privileged: true
+    expose: 
+      - 9000
     volumes:
-    - ./server:/var/www
+    - ./server/sample:/var/www
     networks:
       - tech-boost-php-network
 
@@ -15,9 +17,8 @@ services:
     container_name: tech-boost-web
     ports:
     - 80:80
-    - 8000:8000
     volumes:
-    - ./server:/var/www
+    - ./server/sample:/var/www
     - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
     - tech-boost-php

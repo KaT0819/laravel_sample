@@ -1,41 +1,18 @@
-FROM php:7.2-fpm
-# COPY php.ini /usr/local/etc/php/
+FROM php:7-fpm
 
-RUN apt update \
-  && apt install -y zlib1g-dev mariadb-client \
-  && docker-php-ext-install zip pdo_mysql
+SHELL ["/bin/bash", "-oeux", "pipefail", "-c"]
 
-#Composer install
-COPY --from=composer /usr/bin/composer /usr/bin/composer
+ENV COMPOSER_ALLOW_SUPERUSER=1 \
+  COMPOSER_HOME=/composer
 
-ENV COMPOSER_ALLOW_SUPERUSER 1
+COPY --from=composer:1.10 /usr/bin/composer /usr/bin/composer
 
-ENV COMPOSER_HOME /composer
+RUN apt-get update && \
+  apt-get -y install git unzip libzip-dev libicu-dev libonig-dev && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/* && \
+  docker-php-ext-install intl pdo_mysql zip bcmath
 
-ENV PATH $PATH:/composer/vendor/bin
+COPY ./php.ini /usr/local/etc/php/php.ini
 
-
-WORKDIR /var/www/sample
-
-RUN composer global require "laravel/installer"
-
-
-RUN curl -L git.io/nodebrew | perl - setup
-RUN export PATH=$HOME/.nodebrew/current/bin:$PATH
-RUN echo "export PATH=$PATH:$HOME/.nodebrew/current/bin" >> ~/.bash_profile
-
-# RUN nodebrew setup
-# RUN export PATH=$PATH:$HOME/.nodebrew/current/bin
-# RUN nodebrew install-binary v8.9.3
-# RUN nodebrew use v8.9.3
-
-# RUN npm install
-# RUN npm install sass
-
-
-RUN chmod 777 bootstrap/cache \
-  && chmod 777 storage/app/public \
-  && chmod 777 storage/framework/cache \
-  && chmod 777 storage/framework/sessions \
-  && chmod 777 storage/framework/views \
-  && chmod 777 storage/logs
+WORKDIR /var/www/

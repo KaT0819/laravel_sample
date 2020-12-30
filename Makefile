@@ -29,8 +29,15 @@ setup:
 migrate:
 	docker-compose exec tech-boost-php php artisan migrate
 
-serve:
-	php ./server/sample/artisan serve
+cache-clear:
+	docker-compose exec tech-boost-php php artisan config:clear
+	docker-compose exec tech-boost-php php artisan cache:clear
+	docker-compose exec tech-boost-php php artisan route:clear
+	docker-compose exec tech-boost-php php artisan view:clear
+	docker-compose exec tech-boost-php php artisan config:cache
+
+serv:
+	php ./server/sample/artisan serv
 
 check:
 	wget http://localhost:8000/index.html
