@@ -92,5 +92,8 @@
                 </div>
             </div>
         </div>
+@php
+phpinfo();
+@endphp
     </body>
 </html>

@@ -50,3 +50,6 @@ bash:
 db-bash:
 	docker-compose exec tech-boost-db bash
 
+heroku-deploy:
+	: # サブディレクトリをプッシュ
+	git subtree push --prefix server/sample/ heroku master
