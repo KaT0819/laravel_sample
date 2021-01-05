@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\HTML;
 
 use App\News;
+use App\Profile;
 
 class NewsController extends Controller
 {
@@ -22,5 +23,13 @@ class NewsController extends Controller
         // news/index.blade.php ファイルを渡している
         // また View テンプレートに headline、 posts、という変数を渡している
         return view('news.index', ['headline' => $headline, 'posts' => $posts]);
+    }
+
+    public function profile(Request $request)
+    {
+        $profile = Profile::all();
+        $posts = News::all()->sortByDesc('updated_at');
+
+        return view('news.profile', ['profiles' => $profile]);
     }
 }
