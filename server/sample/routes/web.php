@@ -12,10 +12,10 @@
 */
 
 // asset()やurl()がhttpで生成される
-URL::forceScheme('http');
+// URL::forceScheme('http');
 
 
-Route::get('/', function () {
+Route::get('/welcome', function () {
     return view('welcome');
 });
 

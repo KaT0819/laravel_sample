@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+<!-- 宣言 -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+<div id="app">
+    <p>{{ text }}</p>
+    <p>{{ number + 5 }}</p>
+    <p>{{ bool ? 'Yes' : 'No' }}</p>
+    <p>{{ sayHi() }}</p>
+    <p v-once>v-once {{ text }}</p>
+    <p v-html="html"></p>
+
+    <a v-bind:href="url">url</a>
+    <a :href="url">url1 v-vind省略</a>
+    <a :[attr]="url">url2</a>
+    <a v-bind="{href: url, id: number}">url3</a>
+    <a v-bind="urlObject">url4</a>
+</div>
+<hr>
+
+<div id="app2">
+    <p>現在{{ count }}回クリックされています。</p>
+    <button v-on:click="count += 1">カウント</button>
+    <p>現在{{ count2 }}回クリックされています。</p>
+    <button v-on:click="countUp(5)">カウント</button>
+    <p v-on:mousemove="changeMousePosition">マウスを載せてください
+        <span v-on:mousemove.stop>ここは反応しない</span>
+    </p>
+    <p>X:{{x}}, Y:{{y}}</p>
+    <a v-on:click.prevent href="https://google.co.jp">Google</a>
+    <a @:click href="https://www.example.com">v-on省略は@</a>
+
+    <p><input type="text" v-on:keyup.enter.space="alert" placeholder="エンターでアラート"></p>
+</div>
+<hr>
+
+<div id="app3">
+    <input type="text" v-model="message">
+    <p>{{message}}</p>
+
+    <p>{{counter}}</p>
+    <button @click="counter += 1">+1</button>
+    <p>{{oddeven}}</p>
+
+    <h1 :class="colorObject">Hello</h1>
+    <h1 :class="[color, bg]">Hello</h1>
+    <h1 :style="{color: color, 'background-color': bgColor}">Hello</h1>
+    <h1 :style="styleObject">Hello</h1>
+    <button @click="isActive = !isActive">切替</button>
+
+</div>
+<hr>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            text: 'Hello World!',
+            number: 5,
+            bool: true,
+            html: '<h1>v-html</h1>',
+            url: 'https://www.example.com',
+            attr: 'href',
+            urlObject: {
+                href: 'https://www.example.com',
+                id: 6
+            },
+        },
+        methods: {
+            sayHi: function() {
+                this.text = 'chenge ';
+                return this.text;
+            },
+
+        }
+    })
+    new Vue({
+        el: '#app2',
+        data: {
+            count: 0,
+            count2: 0,
+            x: 0,
+            y: 0,
+        },
+        methods: {
+            countUp: function(times) {
+                this.count2+= 1 * times
+            },
+            changeMousePosition: function(event) {
+                this.x = event.clientX
+                this.y = event.clientY
+            },
+            alert() {
+                alert('aleeeeeeeeeeeeert')
+            }
+        }
+    })
+    new Vue({
+        el: '#app3',
+        data: {
+            message: "hello12",
+            counter: 0,
+            isActive: true,
+            color: 'red',
+            bg: 'bg-blue',
+            bgColor: 'green',
+            styleObject: {
+                color: 'red',
+                'background-color': 'orange',
+            }
+        },
+        computed: {
+            oddeven: function() {
+                return this.counter % 2 == 0 ? '偶数': '奇数'
+            },
+            colorObject: function() {
+                return {
+                    red: this.isActive,
+                    'bg-blue': !this.isActive,
+                }
+            },
+        },
+        watch: {
+            counter: function() {
+                var vm = this;
+                setTimeout(function() {
+                    vm.counter = 0
+                }, 3000)
+            }
+        }
+
+    })
+</script>
+
+<style>
+    .red {
+        color: red;
+    }
+    .bg-blue {
+        background-color: blue;
+    }
+</style>
+</body>
+</html>
