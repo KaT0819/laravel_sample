@@ -9,6 +9,8 @@ services:
       - 9000
     volumes:
     - ./server/sample:/var/www
+    - ./docker/php/php.ini:/usr/local/etc/php/php.ini
+    - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     networks:
       - tech-boost-php-network
 
