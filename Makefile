@@ -1,8 +1,7 @@
-clone:
+.PHONY: net build migrate
 
 ## docker 
 up:
-	: # docker-compose up -d --build
 	docker-compose up -d
 
 build:
@@ -19,22 +18,22 @@ clean:
 	docker-compose down --rmi local --remove-orphans
 
 net:
-	docker network create tech-boost-php-network
+	docker network create sample-php-network
 
 
 setup:
-	docker-compose exec tech-boost-php bash
+	docker-compose exec sample-php bash
 	app cp .env.example .env
 
 migrate:
-	docker-compose exec tech-boost-php php artisan migrate
+	docker-compose exec sample-php php artisan migrate
 
 cache-clear:
-	docker-compose exec tech-boost-php php artisan config:clear
-	docker-compose exec tech-boost-php php artisan cache:clear
-	docker-compose exec tech-boost-php php artisan route:clear
-	docker-compose exec tech-boost-php php artisan view:clear
-	docker-compose exec tech-boost-php php artisan config:cache
+	docker-compose exec sample-php php artisan config:clear
+	docker-compose exec sample-php php artisan cache:clear
+	docker-compose exec sample-php php artisan route:clear
+	docker-compose exec sample-php php artisan view:clear
+	docker-compose exec sample-php php artisan config:cache
 
 serv:
 	php ./server/sample/artisan serv
@@ -44,11 +43,11 @@ check:
 
 ## laravel_web: workspace container bash
 bash:
-	docker-compose exec tech-boost-php bash
+	docker-compose exec sample-php bash
 
 ## mysql: workspace container bash
 db-bash:
-	docker-compose exec tech-boost-db bash
+	docker-compose exec sample-db bash
 
 heroku-deploy:
 	: # サブディレクトリをプッシュ

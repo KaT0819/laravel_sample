@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  tech-boost-php:
-    container_name: tech-boost-php
+  sample-php:
+    container_name: sample-php
     build: ./docker/php
     privileged: true
     expose: 
@@ -12,24 +12,24 @@ services:
     - ./docker/php/php.ini:/usr/local/etc/php/php.ini
     - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
     networks:
-      - tech-boost-php-network
+      - sample-php-network
 
-  tech-boost-web:
+  sample-web:
     image: nginx
-    container_name: tech-boost-web
+    container_name: sample-web
     ports:
     - 80:80
     volumes:
     - ./server/sample:/var/www
     - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
-    - tech-boost-php
+    - sample-php
     networks:
-      - tech-boost-php-network
+      - sample-php-network
 
-  tech-boost-db:
+  sample-db:
     image: mysql:5.7
-    container_name: tech-boost-db
+    container_name: sample-db
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: database
@@ -44,9 +44,9 @@ services:
     ports:
     - 3306:3306
     networks:
-      - tech-boost-php-network
+      - sample-php-network
 
 
 networks:
-    tech-boost-php-network:
+    sample-php-network:
         external: true
